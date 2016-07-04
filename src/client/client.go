@@ -1,6 +1,6 @@
 package main
 
-import protocol "protocol"
+//import protocol "protocol"
 
 import (
 	"fmt"
@@ -8,14 +8,21 @@ import (
 	"os"
 	"strconv"
 	"time"
- 
+
+	"../protocol"
+	"../xmlConfig"
 )
 
- 
-
 func main() {
-	fmt.Println("Server started!")
-	server := "localhost:1024"
+	fmt.Println("Client started!")
+
+	var configMap map[string]string
+	configMap = xmlConfig.GetConfig()
+	localhost := xmlConfig.GetElement("host", configMap)
+	port := xmlConfig.GetElement("port", configMap)
+
+	server := localhost + ":" + port
+
 	tcpAddr, err := net.ResolveTCPAddr("tcp4", server)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Fatal error: %s", err.Error())
